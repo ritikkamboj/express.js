@@ -20,6 +20,7 @@ app.use(express.static(`${__dirname}/public`));
 app.use((req, res, next) => {
   console.log('Hello from the middleware');
   next();
+
 });
 
 app.use((req, res, next) => {
@@ -27,19 +28,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// console.log(tours);
 
-// app.get('/api/v1/tours', getAllTours);
 
-// app.get('/api/v1/tours/:id', getSpecificTour);
 
-// app.post('/api/v1/tours', setNewTour);
-
-// app.patch('/api/v1/tours/:id', updateTour);
-
-// app.delete('/api/v1/tours/:id', deleteTour);
-
-// const userRouter = express.Router();
 
 app.use('/api/v1/tours', tourRouter); // this is the middleware
 app.use('/api/v1/users', userRouter); // this is also middleware
