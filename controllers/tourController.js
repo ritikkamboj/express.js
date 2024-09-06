@@ -1,6 +1,7 @@
 const fs = require('fs');
 
 const Tour = require('./../models/tourModel');
+const { fail } = require('assert');
 
 // const tours = JSON.parse(
 //   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`, 'utf-8')
@@ -53,21 +54,32 @@ exports.getAllTours = async (req, res) => {
   }
 };
 
-exports.getSpecificTour = (req, res) => {
-  console.log(req.params);
+exports.getSpecificTour = async (req, res) => {
+  try {
+    console.log(req.params);
 
-  const id = req.params.id * 1;
-  // const tour = tours.find((el) => el.id === id);
+    const id = req.params.id * 1;
+    const tour = await Tour.findById(req.params.id);
+    // Tour.findOne({_id : req.param.id})
+    // const tour = tours.find((el) => el.id === id);
 
-  // if (id > tours.length) {
+    // if (id > tours.length) {
 
-  res.status(200).json({
-    status: 'success',
+    res.status(200).json({
+      status: 'success',
 
-    // data: {
-    //   tour: tour,
-    // },
-  });
+      data: {
+        tour: tour,
+      },
+    });
+  }
+  catch (err) {
+    res.status(401).json({
+      status: 'fail',
+      message: err.message
+    })
+
+  }
 };
 
 exports.setNewTour = async (req, res) => {
