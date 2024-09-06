@@ -8,15 +8,15 @@ const Tour = require('./../models/tourModel');
 
 
 
-exports.checkBody = (req, res, next) => {
-  if (!req.body.name || !req.body.price) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'missing name or price',
-    });
-  }
-  next();
-};
+// exports.checkBody = (req, res, next) => {
+//   if (!req.body.name || !req.body.price) {
+//     return res.status(400).json({
+//       status: 'fail',
+//       message: 'missing name or price',
+//     });
+//   }
+//   next();
+// };
 
 // exports.checkId = (req, res, next, val) => {
 //   console.log(`Tour id is ${val}`);
@@ -29,17 +29,28 @@ exports.checkBody = (req, res, next) => {
 //   next();
 // };
 
-exports.getAllTours = (req, res) => {
-  console.log(req.requestTime);
+exports.getAllTours = async (req, res) => {
+  try {
+    console.log(req.requestTime);
 
-  res.status(200).json({
-    status: 'success',
-    requestedAt: req.requestTime,
-    // results: tours.length,
-    // data: {
-    //   tours: tours,
-    // },
-  });
+    const tours = await Tour.find();
+
+    res.status(200).json({
+      status: 'success',
+      // requestedAt: req.requestTime,
+      results: tours.length,
+      data: {
+        tours: tours,
+      },
+    });
+
+  }
+  catch (err) {
+    res.status(401).json({
+      status: 'fail',
+      message: err.message
+    })
+  }
 };
 
 exports.getSpecificTour = (req, res) => {
@@ -59,14 +70,30 @@ exports.getSpecificTour = (req, res) => {
   });
 };
 
-exports.setNewTour = (req, res) => {
-  console.log('jai shree ram');
-  res.status(201).json({
-    status: 'success',
-    // data: {
-    //   tour: newTour,
-    // },
-  });
+exports.setNewTour = async (req, res) => {
+
+  try {
+    console.log('jai shree ram');
+
+    // const newTour = new Tour({});
+    // newTour.save()
+
+    const newTour = await Tour.create(req.body);
+
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        tour: newTour,
+      },
+    });
+  }
+  catch (err) {
+    res.status(400).json({
+      status: 'Error',
+      message: err.message
+    })
+  }
 };
 
 exports.updateTour = (req, res) => {
