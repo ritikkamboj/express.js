@@ -47,7 +47,7 @@ exports.getAllTours = async (req, res) => {
 
   }
   catch (err) {
-    res.status(401).json({
+    res.status(404).json({
       status: 'fail',
       message: err.message
     })
@@ -74,7 +74,7 @@ exports.getSpecificTour = async (req, res) => {
     });
   }
   catch (err) {
-    res.status(401).json({
+    res.status(404).json({
       status: 'fail',
       message: err.message
     })
@@ -101,7 +101,7 @@ exports.setNewTour = async (req, res) => {
     });
   }
   catch (err) {
-    res.status(400).json({
+    res.status(404).json({
       status: 'Error',
       message: err.message
     })
@@ -122,17 +122,28 @@ exports.updateTour = async (req, res) => {
     });
   }
   catch (err) {
-    res.status(401).json({
+    res.status(404).json({
       status: 'fail',
       message: err.message
     })
   }
 };
-exports.deleteTour = (req, res) => {
-  console.log(req.body);
+exports.deleteTour = async (req, res) => {
+  try {
 
-  res.status(204).json({
-    status: 'success',
-    data: null,
-  });
+    const tour = await Tour.findByIdAndDelete(req.params.id);
+    console.log(req.body);
+
+    res.status(204).json({
+      status: 'success',
+      data: null,
+    });
+
+  }
+  catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message
+    })
+  }
 };
