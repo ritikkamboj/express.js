@@ -32,9 +32,21 @@ const { fail } = require('assert');
 
 exports.getAllTours = async (req, res) => {
   try {
+    const queryObj = { ...req.query };
+    const excludeFields = ['page', 'sort', 'limit', 'fields'];
+    excludeFields.forEach(el => delete queryObj[el])
     console.log(req.requestTime);
+    console.log(req.query, queryObj);
 
-    const tours = await Tour.find();
+    //mongoDb way of filtering
+    // const tours = await Tour.find({ duration: 5, difficulty: 'easy' });
+    const query = Tour.find(queryObj);
+
+
+    //mongoose method way
+    // const tours =  Tour.find().where('duration').equals(5).where('difficulty').equals('easy');
+
+    const tours = await query;
 
     res.status(200).json({
       status: 'success',
