@@ -37,15 +37,30 @@ exports.getAllTours = async (req, res) => {
     excludeFields.forEach(el => delete queryObj[el])
     console.log(req.requestTime);
     console.log(req.query, queryObj);
+    console.log('isse niche');
 
     //mongoDb way of filtering
     // const tours = await Tour.find({ duration: 5, difficulty: 'easy' });
-    const query = Tour.find(queryObj);
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
 
+
+    let query = Tour.find(JSON.parse(queryStr));
+    // how we write query in mongoDB vs how we are getting through req.query
+    // { difficulty: 'easy', duration : { $gte: 5 } } vs { difficulty: 'easy', duration: { gte: '5' } }
+    // console.log(query)
 
     //mongoose method way
     // const tours =  Tour.find().where('duration').equals(5).where('difficulty').equals('easy');
 
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' ');
+      console.log(sortBy);
+      query = query.sort(sortBy);
+    }
+    else {
+      query = query.sort('-createdAt')
+    }
     const tours = await query;
 
     res.status(200).json({
