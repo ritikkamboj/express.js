@@ -30,6 +30,20 @@ const { fail } = require('assert');
 //   next();
 // };
 
+exports.aliasTopTours = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = '-ratingAverage, price';
+  req.query.fields = 'name, price,ratingAverage,summary,difficulty';
+  next();
+}
+
+class APIFeatures {
+  constructor(query, quertyString) {
+    this.query = query;
+    this.quertyString = quertyString;
+
+  }
+}
 exports.getAllTours = async (req, res) => {
   try {
     const queryObj = { ...req.query };
