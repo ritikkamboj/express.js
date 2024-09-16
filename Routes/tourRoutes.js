@@ -6,7 +6,8 @@ const router = express.Router();
 
 // router.param('id', tourController.checkId); // param middleware
 
-router.route('/top-5-cheaps').get(tourController.aliasTopTours, tourController.getAllTours)
+router.route('/top-5-cheaps').get(tourController.aliasTopTours, tourController.getAllTours);
+router.route('/tour-stats').get(tourController.getTourStats);
 router
   .route('/:id')
   .get(tourController.getSpecificTour)
