@@ -18,7 +18,7 @@ const DB = process.env.DATABASE.replace('<db_password>', process.env.DATABASE_PA
 //   console.log("DB connection done");
 
 // }
-// )
+// 
 //below code is to connect to local DB
 
 mongoose.connect(process.env.DATABASE_LOCAL, {
@@ -28,7 +28,9 @@ mongoose.connect(process.env.DATABASE_LOCAL, {
   useUnifiedTopology: true
 }).then(con => {
   console.log("DB connection to local done");
+
 })
+
 
 
 // console.log(app.get('env'));

@@ -13,14 +13,14 @@ class APIFeatures {
         excludeFields.forEach(el => delete queryObj[el]);
         // console.log(req.requestTime);
         // console.log(req.query, queryObj);
-        console.log('isse niche');
+        // console.log('isse niche');
 
         //mongoDb way of filtering
         // const tours = await Tour.find({ duration: 5, difficulty: 'easy' });
-        console.log('jai maata di 1')
+        // console.log('jai maata di 1')
 
         let queryStr = JSON.stringify(queryObj);
-        console.log('jai maata di 2')
+        // console.log('jai maata di 2')
 
         queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
 
@@ -30,7 +30,7 @@ class APIFeatures {
         this.query = this.query.find(JSON.parse(queryStr));
         // how we write query in mongoDB vs how we are getting through req.query
         // { difficulty: 'easy', duration : { $gte: 5 } } vs { difficulty: 'easy', duration: { gte: '5' } }
-        console.log('jai maata di ')
+        // console.log('jai maata di ')
         // console.log('karan', query.getQuery());
 
         return this;
@@ -49,6 +49,8 @@ class APIFeatures {
     limitFields() {
         if (this.queryString.fields) {
             const fields = this.queryString.fields.split(',').join(' ');
+            console.log(fields);
+
             this.query = this.query.select(fields);
         }
         else {
