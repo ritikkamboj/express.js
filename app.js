@@ -18,12 +18,6 @@ app.use(express.json()); // middleware
 app.use(express.static(`${__dirname}/public`));
 
 app.use((req, res, next) => {
-  console.log('Hello from the middleware');
-  next();
-
-});
-
-app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
@@ -34,5 +28,13 @@ app.use((req, res, next) => {
 
 app.use('/api/v1/tours', tourRouter); // this is the middleware
 app.use('/api/v1/users', userRouter); // this is also middleware
+
+app.all('*', (req, res, next) => {
+  res.status(404).json({
+    status: 'fail',
+    message: `There is no Data corresponding to ${req.originalUrl}`
+  })
+  next();
+})
 
 module.exports = app;
