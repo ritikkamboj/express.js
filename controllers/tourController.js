@@ -1,6 +1,8 @@
 const fs = require('fs');
 const APIFeatures = require('./../utils/apiFeatures');
 const Tour = require('./../models/tourModel');
+
+
 // const { fail } = require('assert');
 
 // const tours = JSON.parse(
@@ -79,9 +81,9 @@ exports.getAllTours = async (req, res) => {
     console.log('getALl ke andar', req.query)
     console.log(Tour.find())
     const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .limitFields()
-    .pagination();
+      .filter()
+      .limitFields()
+      .pagination();
 
 
     const tours = await features.query;

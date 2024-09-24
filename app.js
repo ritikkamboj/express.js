@@ -1,5 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
+const AppError = require('./utils/appError');
+const globalErrorHandler = require('./controllers/errController');
+
 
 const app = express();
 
@@ -35,24 +38,17 @@ app.all('*', (req, res, next) => {
   //   message: `There is no Data corresponding to ${req.originalUrl}`
   // })
   // next();
-  const err = new Error(`There is no Data corresponding to ${req.originalUrl}`);
-  err.statusCode = 404;
-  err.status = 'fail'
-  next(err);
+  // const err = new Error(`There is no Data corresponding to ${req.originalUrl}`);
+  // err.statusCode = 404;
+  // err.status = 'fail'
+
+  next(new AppError(`There is no Data corresponding to ${req.originalUrl}`, 404))
+  // next(err);
 
 
 });
 
 // for Opeartional Error ( global error handling middleware )
-app.use((err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error'
-
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message
-
-  })
-})
+app.use(globalErrorHandler);
 
 module.exports = app;
