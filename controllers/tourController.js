@@ -105,10 +105,13 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
 
 exports.getSpecificTour = catchAsync(async (req, res, next) => {
 
-  console.log(req.params);
+  console.log(req.params, 'yeh waala');
+  console.log('jai ');
 
-  const id = req.params.id * 1;
+
+  // const id = req.params.id * 1;
   const tour = await Tour.findById(req.params.id);
+  console.log(tour)
   // Tour.findOne({_id : req.param.id})
   // const tour = tours.find((el) => el.id === id);
 

@@ -42,7 +42,7 @@ app.all('*', (req, res, next) => {
   // err.statusCode = 404;
   // err.status = 'fail'
 
-  next(new AppError(`There is no Data corresponding to ${req.originalUrl}`))
+  next(new AppError(`There is no Data corresponding to ${req.originalUrl}`, 404))
   // next(err);
 
 
