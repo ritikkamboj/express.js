@@ -4,6 +4,12 @@ const handleCastErrorDB = err => {
     const message = `Invalid ${err.path} : ${err.value}.`
     return new AppError(message, 400);
 }
+
+const handleDuplicateFieldDB = err => {
+    const value = err.errmsg.match(/\v(['"])%(\1@![^\\]|\\.)*\1/)[0];
+    const message = `Duplicate Field value : ${value}, Please use another value `
+    return new AppError(message, 400);
+}
 const sendErrorDev = (err, res) => {
     res.status(err.statusCode).json({
         status: err.status,
@@ -55,6 +61,7 @@ module.exports = (err, req, res, next) => {
 
 
         }
+        if (error.code === 11000) error = handleDuplicateFieldDB(error);
         sendErrorProd(error, res);
     }
 
