@@ -6,7 +6,10 @@ const app = require('./app');
 const mongoose = require('mongoose');
 
 
-const DB = process.env.DATABASE.replace('<db_password>', process.env.DATABASE_PASSWORD);
+// const DB = process.env.DATABASE.replace('<db_password>', process.env.DATABASE_PASSWORD);
+const DB = process.env.NODE_ENV === 'production'
+  ? process.env.DATABASE.replace('<db_password>', process.env.DATABASE_PASSWORD)
+  : process.env.DATABASE_LOCAL;
 
 // below code to connect to remote DB
 // mongoose.connect(DB, {
@@ -20,8 +23,10 @@ const DB = process.env.DATABASE.replace('<db_password>', process.env.DATABASE_PA
 // }
 // 
 //below code is to connect to local DB
+console.log(`Connecting to database: ${DB}`);
+console.log(process.env.DATABASE_LOCAL);
 
-mongoose.connect(process.env.DATABASE_LOCAL, {
+mongoose.connect(DB, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -30,6 +35,7 @@ mongoose.connect(process.env.DATABASE_LOCAL, {
   console.log("DB connection to local done");
 
 })
+
 
 
 
@@ -45,7 +51,17 @@ console.log(process.env);
 
 // const port = 3000;
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+
+const server = app.listen(port, () => {
   console.log(`app running on the port ${port}...`);
 });
 
+process.on('unhandledRejection', err => {
+  console.log(err.name, err.message)
+  server.close(() => {
+    Process.exit(1);
+  }
+
+  )
+
+})
