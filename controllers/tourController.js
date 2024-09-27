@@ -80,6 +80,7 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
   //   console.log('ganesh ji ')
   //   if (skip >= numTours) throw new Error('This page does not exist');
   // }
+  // console.log(x)
   console.log('getALl ke andar', req.query)
   console.log(Tour.find())
   const features = new APIFeatures(Tour.find(), req.query)
