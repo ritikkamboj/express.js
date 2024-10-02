@@ -5,6 +5,10 @@ const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const jwt = require('jsonwebtoken');
 
+const signToken = id => {
+    return jwt.sign({ id: id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+}
+
 exports.signup = catchAsync(async (req, res, next) => {
     // below line makes any user declare itself as admin , to stop thart we have to change the line as :
     // const newUser = await User.create(req.body);
@@ -16,7 +20,7 @@ exports.signup = catchAsync(async (req, res, next) => {
         passwordConfirm: req.body.passwordConfirm
     });
 
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+    const token = signToken(newUser._id);
 
     res.status(201).json({
         status: 'success',
@@ -28,17 +32,26 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 
 
-exports.login = (req, res, next) => {
+exports.login = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
     //  1. checking that if email and password exist 
     if (!email || !password) {
         return next(new AppError('Please Provide the email and password', 400))
     }
     // 2. check that if the user exist and password is correct
-    const user = User.findOne({ enail: email });
+    const user = await User.findOne({ email: email }).select('+password');
+    const correct = await user.correctPassword(password, user.password);
+
+    if (!user || !correct) {
+        return next(new AppError('In correct email or passowrd ', 401));
+
+    }
+
+    console.log(user, 'jai');
+
 
     //3 . if all things are ok then we can send a token 
-    const token = '';
+    const token = signToken(user._id)
 
     res.status(200).json({
         status: 'success',
@@ -46,5 +59,5 @@ exports.login = (req, res, next) => {
     });
 
 
-};
+});
 
