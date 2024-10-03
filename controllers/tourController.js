@@ -35,12 +35,12 @@ const AppError = require('../utils/appError');
 // };
 
 exports.aliasTopTours = (req, res, next) => {
-  console.log('MOna', req.query);
+  // console.log('MOna', req.query);
 
   req.query.limit = '5';
   req.query.sort = '-ratingAverage, price';
   req.query.fields = 'name, price,ratingAverage,summary,difficulty';
-  console.log(req.query)
+  // console.log(req.query)
   next();
 }
 
@@ -81,8 +81,8 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
   //   if (skip >= numTours) throw new Error('This page does not exist');
   // }
   // console.log(x)
-  console.log('getALl ke andar', req.query)
-  console.log(Tour.find())
+  // console.log('getALl ke andar', req.query)
+  // console.log(Tour.find())
   const features = new APIFeatures(Tour.find(), req.query)
     .filter()
     .limitFields()
@@ -112,7 +112,7 @@ exports.getSpecificTour = catchAsync(async (req, res, next) => {
 
   // const id = req.params.id * 1;
   const tour = await Tour.findById(req.params.id);
-  console.log(tour)
+  // console.log(tour)
   // Tour.findOne({_id : req.param.id})
   // const tour = tours.find((el) => el.id === id);
 
