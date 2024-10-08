@@ -39,7 +39,7 @@ const sendErrorProd = (err, res) => {
     else {
 
 
-        console.log('ERROR', err);
+        // console.log('ERROR', err);
         res.status(500).json({
             status: 'error',
             message: 'Something Went Wrong'

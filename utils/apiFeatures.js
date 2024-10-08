@@ -38,7 +38,7 @@ class APIFeatures {
     sort() {
         if (this.queryString.sort) {
             const sortBy = this.queryString.sort.split(',').join(' ');
-            console.log('yeh waala', sortBy);
+            // console.log('yeh waala', sortBy);
             this.query = this.query.sort(sortBy);
         }
         else {
@@ -49,7 +49,7 @@ class APIFeatures {
     limitFields() {
         if (this.queryString.fields) {
             const fields = this.queryString.fields.split(',').join(' ');
-            console.log(fields);
+            // console.log(fields);
 
             this.query = this.query.select(fields);
         }

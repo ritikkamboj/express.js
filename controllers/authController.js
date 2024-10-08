@@ -1,5 +1,6 @@
 //authController.js
 
+const { promisify } = require('util');
 const AppError = require('../utils/appError');
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
@@ -47,7 +48,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
     }
 
-    console.log(user, 'jai');
+    // console.log(user, 'jai');
 
 
     //3 . if all things are ok then we can send a token 
@@ -72,7 +73,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
     }
 
-    console.log('token' + token);
+    // console.log('token' + token);
 
     if (!token) {
 
@@ -81,7 +82,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     }
 
     // 2. validate the token 
-
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    console.log(decoded)
     // 3.check if user still exists
 
     // 4. check if user chc=ange password afte the token was issue 
